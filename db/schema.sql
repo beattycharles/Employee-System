@@ -6,7 +6,6 @@ USE  company_db;
 CREATE TABLE deparment(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL
-    
 );
 
 CREATE TABLE roles(
@@ -14,8 +13,8 @@ CREATE TABLE roles(
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
     deparment_id INT NOT NULL 
-    FOREIGN KEY(deparment_id),
-    REFERENCES deparment(id),
+    FOREIGN KEY(deparment_id)
+    REFERENCES deparment(id)
     ON DELETE SET NULL
 );
 
@@ -24,8 +23,8 @@ CREATE TABLE employee(
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     roles_id INT NOT NULL,
-    FOREIGN KEY(roles_id),
-    REFERENCES roles(id),
+    FOREIGN KEY(roles_id)
+    REFERENCES roles(id)
     ON DELETE CASCADE
     manager_id INT,
     FOREIGN KEY(manager_id),
