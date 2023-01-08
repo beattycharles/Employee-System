@@ -18,26 +18,8 @@
 const mysql = require("mysql2");
 const cTable = require("console.table");
 const { default: inquirer } = require("inquirer");
-// console.table([
-//   {
-//     name: 'foo',
-//     age: 10
-//   }, {
-//     name: 'bar',
-//     age: 20
-//   }
-// ]);
-
-// // prints
-// name  age
-// ----  ---
-// foo   10
-// bar   20
 const inquirer = require('inquirer');
 const db = require('./connection/connect.js');
-const { getRandomValues } = require("crypto");
-const { rightPadder } = require("easy-table");
-const { table } = require("console");
 let deparmentId;
 let managerId;
 let updateEmployeeId;
@@ -296,6 +278,6 @@ function updateRole(){
             )
         })
     })
-}
+} 
 
 StarterQuestions();
