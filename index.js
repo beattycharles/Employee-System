@@ -83,7 +83,7 @@ function getDepartments() {
 }
 function getRoles() {
   db.query(
-    "SELECT * FROM roles, department_id as Title FROM roles JOIN department ON roles.department_id = department.id;",
+    "SELECT roles.id, roles.title, roles.salary, roles.department_id AS Department FROM roles JOIN roles ON roles.department_id = department.title;",
     function (err, results) {
       console.table(results);
       roleList = results;

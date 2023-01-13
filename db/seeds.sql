@@ -1,6 +1,6 @@
-INSERT INTO department(title)
-VALUES ('Geek Squad'),
-       ('Customer Service');
+INSERT INTO department(id, title)
+VALUES (1,'Geek Squad'),
+       (2, 'Customer Service');
 
 INSERT INTO roles(title, salary, department_id)
 VALUES  ('CIA Specialist', 40000, 1),
