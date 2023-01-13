@@ -6,7 +6,7 @@ INSERT INTO roles(title, salary, department_id)
 VALUES  ('CIA Specialist', 40000, 1),
         ("Consultation Agent", 26000, 1),
         ('Repair Agent', 30000, 1),
-        ('Lead', 30000, 2);
+        ('Lead', 30000, 2),
         ('Checkout', 20000, 2),
         ('Curbside', 20000, 2);
 
