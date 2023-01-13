@@ -39,7 +39,7 @@ function StarterQuestions() {
           "View all departments",
           "View all roles",
           "View all employees",
-          "Add a deparment",
+          "Add a department",
           "Add a role",
           "Add an employee",
           "Update an employee role",
@@ -54,7 +54,7 @@ function StarterQuestions() {
         getRoles();
       } else if (answers.options === "View all employees") {
         getEmployees();
-      } else if (answers.options === "Add a deparment") {
+      } else if (answers.options === "Add a department") {
         addDepartment();
       } else if (answers.options === "Add a role") {
         addRole();
@@ -82,14 +82,17 @@ function getDepartments() {
   });
 }
 function getRoles() {
-  db.query("SELECT * FROM roles;", function (err, results) {
-    console.table(results);
-    roleList = results;
-    StarterQuestions();
-  });
+  db.query(
+    "SELECT * FROM roles, department_id as Title FROM roles JOIN department ON roles.department_id = department.id;",
+    function (err, results) {
+      console.table(results);
+      roleList = results;
+      StarterQuestions();
+    }
+  );
 }
 function getEmployees() {
-  db.query("SELECT * FROM employee;", function (err, results) {
+  db.query("SELECT * FROM employee", function (err, results) {
     console.table(results);
     employeeList = results;
     StarterQuestions();
@@ -142,23 +145,23 @@ function addRole() {
           type: "list",
           message: "Department role is under?",
           name: "roleDepartment",
-          choices: deparmentList,
+          choices: departmentList,
         },
       ])
       .then((answers) => {
         let newRole = answers;
-        for (let i = 0; i < deparmentList.length; i++) {
-          if (deparmentList[i].name === newRole.roleDepartment) {
-            deparmentId = deparmentList[i].id;
+        for (let i = 0; i < departmentList.length; i++) {
+          if (departmentList[i].name === newRole.roleDepartment) {
+            departmentId = departmentList[i].id;
           }
         }
-        const { roleName, salary } = newRole;
+        const { roleName, salary, roleDepartment } = newRole;
         db.query(
           "INSERT INTO roles SET ?",
           {
             title: roleName,
             salary: eval(salary),
-            department_id: deparmentId,
+            department_id: roleDepartment,
           },
           function (err, results) {
             console.log("New Role Added!");
