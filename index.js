@@ -83,7 +83,7 @@ function getDepartments() {
 }
 function getRoles() {
   db.query(
-    "SELECT roles.id, roles.title, roles.salary, roles.department_id AS Department FROM roles JOIN roles ON roles.department_id = department.title;",
+    "SELECT roles.id, roles.title, roles.salary, department.title AS Department FROM roles INNER JOIN department ON roles.department_id = department.id;",
     function (err, results) {
       console.table(results);
       roleList = results;
@@ -92,11 +92,14 @@ function getRoles() {
   );
 }
 function getEmployees() {
-  db.query("SELECT * FROM employee", function (err, results) {
-    console.table(results);
-    employeeList = results;
-    StarterQuestions();
-  });
+  db.query(
+    "SELECT e1.id, e1.first_name, e1.last_name, roles.title, department.title AS Department, roles.salary, CONCAT(e2.first_name, ' ', e2.last_name) AS Manager FROM employee e1 JOIN roles ON e1.roles_id = roles.id JOIN department ON roles.department_id = department.id LEFT JOIN employee e2 ON e1.manager_id = e2.id;",
+    function (err, results) {
+      console.table(results);
+      employeeList = results;
+      StarterQuestions();
+    }
+  );
 }
 
 function addDepartment() {
@@ -113,7 +116,7 @@ function addDepartment() {
       console.log(newDepartment);
       const { department } = newDepartment;
       db.query(
-        "INSERT INTO deparment (name) VALUES (?)",
+        "INSERT INTO department (name) VALUES (?)",
         department,
         function (err, results) {
           console.table(results);
@@ -126,7 +129,7 @@ function addDepartment() {
 
 function addRole() {
   db.query("SELECT * FROM department", function (err, results) {
-    deparmentList = results.map((result) => {
+    departmentList = results.map((result) => {
       return result.title;
     });
     inquirer
@@ -150,11 +153,7 @@ function addRole() {
       ])
       .then((answers) => {
         let newRole = answers;
-        for (let i = 0; i < departmentList.length; i++) {
-          if (departmentList[i].name === newRole.roleDepartment) {
-            departmentId = departmentList[i].id;
-          }
-        }
+
         const { roleName, salary, roleDepartment } = newRole;
         db.query(
           "INSERT INTO roles SET ?",
