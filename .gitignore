@@ -104,4 +104,6 @@ dist
 .tern-port
 .package.json
 .node_modules
-connection
+.connection/connection.js
+connection/connect.js
+connect.js
