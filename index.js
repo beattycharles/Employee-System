@@ -9,12 +9,12 @@
 //salary of role.
 
 //4. view all employees =  employee id, first name, last name, job title,
-//deparment, salaries, there manager
+//department, salaries, there manager
 
-//5. add department = deparment name added to database
-//6.add role = role info name, salary, deparment.
+//5. add department = department name added to database
+//6.add role = role info name, salary, department.
 //7. add employee = first name, last name, role, manager
-//8. update role = select empolyee update role
+//8. update role = select employee update role
 const mysql = require("mysql2");
 const cTable = require("console.table");
 const inquirer = require("inquirer");
@@ -77,7 +77,7 @@ function getDepartments() {
     if (err) throw err;
     // console.log(results);
     console.table(results);
-    // deparmentList = results;
+    // departmentList = results;
     StarterQuestions();
   });
 }
@@ -113,11 +113,11 @@ function addDepartment() {
     ])
     .then((answers) => {
       let newDepartment = answers;
-      console.log(newDepartment);
+      //console.log(newDepartment);
       const { department } = newDepartment;
       db.query(
-        "INSERT INTO department (name) VALUES (?)",
-        department,
+        "INSERT INTO department SET ?",
+        { title: department },
         function (err, results) {
           console.table(results);
           console.log("New Department Added!");
@@ -129,15 +129,18 @@ function addDepartment() {
 
 function addRole() {
   db.query("SELECT * FROM department", function (err, results) {
-    departmentList = results.map((result) => {
-      return result.title;
+    departmentList = results.map((department) => {
+      return {
+        name: department.title,
+        value: department.id,
+      };
     });
     inquirer
       .prompt([
         {
           type: "input",
           message: "Name of Role?",
-          name: "roleName",
+          name: "title",
         },
         {
           type: "input",
@@ -147,26 +150,30 @@ function addRole() {
         {
           type: "list",
           message: "Department role is under?",
-          name: "roleDepartment",
+          name: "department_id",
           choices: departmentList,
         },
       ])
       .then((answers) => {
-        let newRole = answers;
-
-        const { roleName, salary, roleDepartment } = newRole;
-        db.query(
-          "INSERT INTO roles SET ?",
-          {
-            title: roleName,
-            salary: eval(salary),
-            department_id: roleDepartment,
-          },
-          function (err, results) {
-            console.log("New Role Added!");
-            StarterQuestions();
-          }
-        );
+        const sql = `INSERT INTO roles SET ?`;
+        db.query(sql, answers, function (err, results) {
+          if (err) throw err;
+          console.log(`Role ${answers.title} has been added.`);
+          StarterQuestions();
+        });
+        // let newRole = answers;
+        // const { roleName, salary, roleDepartment } = newRole;
+        // db.query(
+        //   "INSERT INTO roles SET ?",
+        //   {
+        //     title: roleName,
+        //     salary: salary,
+        //     department_id: roleDepartment,
+        //   },
+        //   function (err, results) {
+        //     console.table(results);
+        //     console.log("New Role Added!");
+        //     StarterQuestions();
       });
   });
 }
