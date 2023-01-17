@@ -1,20 +1,3 @@
-//1. start app. view all departments, view all roles
-//view all employees, add a department, add a role,
-//add an employee, update employee role
-
-//2. view all department = table shows department
-//names and ids.
-
-//3. view all roles = job title, role id, department of role,
-//salary of role.
-
-//4. view all employees =  employee id, first name, last name, job title,
-//department, salaries, there manager
-
-//5. add department = department name added to database
-//6.add role = role info name, salary, department.
-//7. add employee = first name, last name, role, manager
-//8. update role = select employee update role
 const mysql = require("mysql2");
 const cTable = require("console.table");
 const inquirer = require("inquirer");
